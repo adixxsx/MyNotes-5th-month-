@@ -58,15 +58,16 @@ class HomeView: UIViewController, UICollectionViewDelegate {
     }
     
     private func setupNavigationItem() {
-        navigationItem.title = "Home"
-        let rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "gearshape"), style: .plain, target: self, action: #selector(settingsButtonTapped))
-        self.navigationController?.navigationBar.tintColor = UIColor.black
-        navigationItem.rightBarButtonItem = rightBarButtonItem
-    }
-    
-    @objc func settingsButtonTapped(_ sender: UIButton) {
-        navigationController?.pushViewController(SettingsVC(), animated: true)
-    }
+            navigationItem.title = "Home"
+            let rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "gearshape"), style: .plain, target: self, action: #selector(itemButtonTapped))
+            self.navigationController?.navigationBar.tintColor = UIColor.black
+            navigationItem.rightBarButtonItem = rightBarButtonItem
+        }
+        
+        @objc func itemButtonTapped() {
+            let vc = SettingView()
+            navigationController?.pushViewController(vc, animated: true)
+        }
     
     private func setupUI(){
         view.backgroundColor = .systemBackground
@@ -97,8 +98,8 @@ class HomeView: UIViewController, UICollectionViewDelegate {
        addButton.snp.makeConstraints { make in
            make.bottom.equalToSuperview().offset(-133)
            make.centerX.equalToSuperview()
-           make.height.equalTo(44)
-           make.width.equalTo(44)
+           make.height.equalTo(48)
+           make.width.equalTo(48)
        }
     }
     
