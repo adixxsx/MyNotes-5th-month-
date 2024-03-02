@@ -10,7 +10,7 @@ import SnapKit
 
 class SettingView: UIViewController {
     
-    private let images: [UIImage] = [UIImage(systemName: "character.book.closed.fill")!, UIImage(systemName: "moon.fill")!]
+    private let images: [UIImage] = [UIImage(imageLiteralResourceName: "language").withTintColor(.label), UIImage(systemName: "moon.fill")!]
     private let titles: [String] = ["Язык", "Темная тема"]
 
     private lazy var stackTableView: UITableView = {

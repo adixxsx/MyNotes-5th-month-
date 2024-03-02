@@ -45,7 +45,7 @@ class HomeView: UIViewController, UICollectionViewDelegate {
         let view = UIButton(type: .system)
         view.setTitle("+", for: .normal)
         view.tintColor = .white
-        view.titleLabel?.font = UIFont.systemFont(ofSize: 24)
+        view.titleLabel?.font = UIFont.systemFont(ofSize: 25)
         view.backgroundColor = .red
         view.layer.cornerRadius = 22
         return view
@@ -98,8 +98,8 @@ class HomeView: UIViewController, UICollectionViewDelegate {
        addButton.snp.makeConstraints { make in
            make.bottom.equalToSuperview().offset(-133)
            make.centerX.equalToSuperview()
-           make.height.equalTo(48)
-           make.width.equalTo(48)
+           make.height.equalTo(50)
+           make.width.equalTo(50)
        }
     }
     
