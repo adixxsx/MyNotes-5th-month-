@@ -16,7 +16,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: windowScene)
         
-        let rootVC = HomeView()
+        let rootVC = OnBoardingView()
         let nav1 = UINavigationController(rootViewController: rootVC)
         
         window.rootViewController = nav1  
