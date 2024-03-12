@@ -9,7 +9,7 @@ import UIKit
 
 class OnBoardCell: UICollectionViewCell {
     
-    static var reuseID = "one_board_cell"
+    static var reuseID = "OnBoard"
     
     let myImage: UIImageView = {
         let view = UIImageView()

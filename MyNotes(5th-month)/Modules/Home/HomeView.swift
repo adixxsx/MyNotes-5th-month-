@@ -47,7 +47,8 @@ class HomeView: UIViewController, UICollectionViewDelegate {
         view.tintColor = .white
         view.titleLabel?.font = UIFont.systemFont(ofSize: 25)
         view.backgroundColor = .red
-        view.layer.cornerRadius = 22
+        view.layer.cornerRadius = 25
+        view.addTarget(self, action: #selector(noteTapped), for: .touchUpInside)
         return view
     }()
 
@@ -57,10 +58,12 @@ class HomeView: UIViewController, UICollectionViewDelegate {
         setupNavigationItem()
         setupNavigationItem()
         interfaceForRemember()
+        //noteTapped()
     }
     
     override func viewWillAppear(_ animated: Bool) {
             super.viewWillAppear(animated)
+        setupNavigationItem()
             if UserDefaults.standard.bool(forKey: "Theme") == false {
                 view.overrideUserInterfaceStyle = .light
             } else {
@@ -72,7 +75,8 @@ class HomeView: UIViewController, UICollectionViewDelegate {
             navigationItem.title = "Home"
             let rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "gearshape"), style: .plain, target: self, action: #selector(itemButtonTapped))
             navigationItem.rightBarButtonItem = rightBarButtonItem
-
+            //rightBarButtonItem.tintColor = .label
+        
         }
         
         private func interfaceForRemember(isDark: Bool? = nil) {
@@ -124,9 +128,12 @@ class HomeView: UIViewController, UICollectionViewDelegate {
        }
     }
     
-
-
+    @objc func noteTapped() {
+        let vc = NoteView()
+        navigationController?.pushViewController(vc, animated: true)
+    }
 }
+
 
 extension HomeView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

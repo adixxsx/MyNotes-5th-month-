@@ -8,23 +8,34 @@
 import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-
+    
     var window: UIWindow?
-
-
+    
+    
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
-        let window = UIWindow(windowScene: windowScene)
         
-        let rootVC = OnBoardingView()
-        let nav1 = UINavigationController(rootViewController: rootVC)
+        window = UIWindow(windowScene: windowScene)
         
-        window.rootViewController = nav1  
+        var rootViewController: UIViewController
         
-        self.window = window
+        if UserDefaults.standard.bool(forKey: "OnBoard") {
+            rootViewController = HomeView()
+            
+        } else {
+            rootViewController = OnBoardingView()
+        }
         
-        self.window?.makeKeyAndVisible()
+        
+        let navigationController = UINavigationController(rootViewController: rootViewController)
+        
+        window?.rootViewController = navigationController
+        
+        window?.makeKeyAndVisible()
     }
+}
+        
+
 
     func sceneDidDisconnect(_ scene: UIScene) {
        
@@ -47,5 +58,5 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
 
-}
+
 

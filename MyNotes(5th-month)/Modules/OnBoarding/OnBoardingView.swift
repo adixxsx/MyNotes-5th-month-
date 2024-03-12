@@ -117,7 +117,7 @@ class OnBoardingView: UIViewController  {
     }
     
     @objc private func nextButtonTapped() {
-        UserDefaults.standard.set(true, forKey: "one_board_cell")
+        UserDefaults.standard.set(true, forKey: "OnBoard")
         if currentPage < StructBoarding.count - 1 {
             currentPage += 1
             scrollToCurrentPage(animated: true)

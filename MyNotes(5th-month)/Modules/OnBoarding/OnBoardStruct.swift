@@ -6,9 +6,12 @@
 //
 
 import UIKit
+import SnapKit
 
 struct StructBoardings {
     var image: String
     var mainLabel: String
     var label: String
 }
+
+
