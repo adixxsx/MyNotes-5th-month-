@@ -8,11 +8,11 @@
 protocol HomeControllerProtocol {
     func onGetNotes()
     
-    func onSuccessNotes(notes: [String])
+    func onSuccesNotes(notes: [Note])
 }
 
 class HomeController: HomeControllerProtocol {
-   
+    
     private var view: HomeViewProtocol?
     private var model: HomeModelProtocol?
     
@@ -25,8 +25,9 @@ class HomeController: HomeControllerProtocol {
         model?.getNotes()
     }
     
-    func onSuccessNotes(notes: [String]) {
+    func onSuccesNotes(notes: [Note]) {
         view?.successNotes(notes: notes)
+        
     }
+    
 }
-

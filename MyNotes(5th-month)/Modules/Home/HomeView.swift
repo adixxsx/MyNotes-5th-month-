@@ -9,14 +9,14 @@ import UIKit
 import SnapKit
 
 protocol HomeViewProtocol {
-    func successNotes(notes: [String])
+    func successNotes(notes: [Note])
 }
 
 class HomeView: UIViewController, UICollectionViewDelegate {
     
     private var controller: HomeControllerProtocol?
-
-    private var notes: [String] = ["Do homework", "Buy gigabyte", "Meet friends", "Go to the gym!"]
+       
+       private var notes: [Note] = []
     
     private lazy var noteSearchBar: UISearchBar = {
         let view = UISearchBar()
@@ -58,7 +58,8 @@ class HomeView: UIViewController, UICollectionViewDelegate {
         setupNavigationItem()
         setupNavigationItem()
         interfaceForRemember()
-        //noteTapped()
+        controller = HomeController(view: self)
+        navigationItem.hidesSearchBarWhenScrolling = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -69,6 +70,7 @@ class HomeView: UIViewController, UICollectionViewDelegate {
             } else {
                 view.overrideUserInterfaceStyle = .dark
             }
+        controller?.onGetNotes()
         }
     
     private func setupNavigationItem() {
@@ -141,22 +143,32 @@ extension HomeView: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: NoteCell.reuseId, for: indexPath) as? NoteCell
-        cell?.transfer(title: notes[indexPath.row])
-        return cell ?? UICollectionViewCell()
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: NoteCell.reuseId, for: indexPath) as? NoteCell else {
+            return UICollectionViewCell() }
+        cell.transfer(title: notes[indexPath.row].title ?? "")
+        return cell
     }
 }
+
+
 
 extension HomeView: UICollectionViewDelegateFlowLayout{
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: (collectionView.frame.width - 12) / 2, height: 100)
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+            let noteView = NoteView()
+            noteView.note = notes[indexPath.row]
+            navigationController?.pushViewController(noteView, animated: true)
+        }
 }
 
 extension HomeView: HomeViewProtocol {
-    func successNotes(notes: [String]) {
+    func successNotes(notes: [Note]) {
         self.notes = notes
         notesCollectionView.reloadData()
     }
+    
 }
 

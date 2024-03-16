@@ -10,16 +10,20 @@ protocol HomeModelProtocol {
 }
 
 class HomeModel: HomeModelProtocol {
-   
+    
     private let controller: HomeControllerProtocol?
+    
+    private let coreDataService = CoreDataService.shared
     
     init(controller: HomeControllerProtocol) {
         self.controller = controller
     }
     
-    private var notes: [String] = ["Do homework", "Buy gigabyte", "Meet friends", "Go to the gym!"]
+    private var notes: [Note] = []
     
     func getNotes() {
-        controller?.onSuccessNotes(notes: notes)
+        notes = coreDataService.fetchNotes()
+        controller?.onSuccesNotes(notes: notes)
     }
+    
 }

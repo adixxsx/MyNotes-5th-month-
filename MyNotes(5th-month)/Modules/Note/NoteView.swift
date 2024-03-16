@@ -10,6 +10,9 @@ import SnapKit
 
 class NoteView: UIViewController, UITextViewDelegate {
     
+    private let coreCoreService = CoreDataService.shared
+    var note: Note?
+    
     private lazy var noteSearchBar: UISearchBar = {
         let view = UISearchBar()
         view.placeholder = "Title"
@@ -24,7 +27,6 @@ class NoteView: UIViewController, UITextViewDelegate {
         view.textColor = .label
         view.backgroundColor = UIColor().rgb(r: 238, g: 238, b: 239, alpha: 1)
         view.layer.cornerRadius = 16
-        //view.backgroundColor = .label
         view.tintColor = .label
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -54,6 +56,16 @@ class NoteView: UIViewController, UITextViewDelegate {
         setupUI()
         uITextView.delegate = self
         noteSearchBar.searchTextField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
+        
+        guard let note = note else {
+            return
+        }
+        noteSearchBar.text = note.title
+        
+//        guard let label = label else {
+//            return
+//        }
+//        uITextView.text = label.title
     }
     
     private func setupUI() {
@@ -97,14 +109,14 @@ class NoteView: UIViewController, UITextViewDelegate {
             make.horizontalEdges.equalToSuperview().inset(12)
             make.height.equalTo(40)
         }
-
+        
         view.addSubview(uITextView)
         uITextView.snp.makeConstraints { make in
             make.top.equalTo(noteSearchBar.snp.bottom).offset(26)
             make.horizontalEdges.equalToSuperview().inset(20)
             make.bottom.equalTo(view.snp.bottom).offset(-175)
         }
-
+        
         view.addSubview(copyButton)
         copyButton.snp.makeConstraints { make in
             make.top.equalTo(view.snp.bottom).offset(-219)
@@ -112,14 +124,14 @@ class NoteView: UIViewController, UITextViewDelegate {
             make.height.equalTo(32)
             make.width.equalTo(32)
         }
-
+        
         view.addSubview(saveButton)
         saveButton.snp.makeConstraints { make in
             make.top.equalTo(uITextView.snp.bottom).offset(80)
             make.horizontalEdges.equalToSuperview().inset(27)
             make.height.equalTo(40)
         }
-
+        
         saveButton.addTarget(self, action: #selector(saveButtonPressed), for: .touchUpInside)
         
     }
@@ -150,13 +162,21 @@ class NoteView: UIViewController, UITextViewDelegate {
     }
     
     @objc private func textFieldDidEndEditing(_ textField: UITextField) {
-            updateSaveButtonState()
-        }
+        updateSaveButtonState()
+    }
+    
+    @objc private func saveButtonPressed() {
+        let id = UUID().uuidString
         
-        @objc private func saveButtonPressed() {
-            if !(noteSearchBar.searchTextField.text?.isEmpty ?? true) || !(uITextView.text.isEmpty) {
-                navigationController?.popToRootViewController(animated: true)
-            }
+        let date = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        let dateString = dateFormatter.string(from: date)
+        
+        if !(noteSearchBar.searchTextField.text?.isEmpty ?? true) || !(uITextView.text.isEmpty) {
+            coreCoreService.addNote(id: id, title: noteSearchBar.text ?? "", description: uITextView.text, date: dateString)
+            navigationController?.popViewController(animated: true)
         }
         
     }
+}
