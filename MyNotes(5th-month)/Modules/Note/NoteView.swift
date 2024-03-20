@@ -8,7 +8,21 @@
 import UIKit
 import SnapKit
 
+protocol NoteViewProtocol {
+    
+    func successAddNote()
+    
+    func failureAddNote()
+    
+    func succesDelete()
+    
+    func failureDelete()
+    
+}
+
 class NoteView: UIViewController, UITextViewDelegate {
+    
+    var controller: NoteControllerProtocol?
     
     private let coreCoreService = CoreDataService.shared
     var note: Note?
@@ -53,6 +67,7 @@ class NoteView: UIViewController, UITextViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        controller = NoteController(view: self)
         setupUI()
         uITextView.delegate = self
         noteSearchBar.searchTextField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
@@ -61,11 +76,8 @@ class NoteView: UIViewController, UITextViewDelegate {
             return
         }
         noteSearchBar.text = note.title
+        //uITextView.text = note.desc
         
-//        guard let label = label else {
-//            return
-//        }
-//        uITextView.text = label.title
     }
     
     private func setupUI() {
@@ -85,11 +97,11 @@ class NoteView: UIViewController, UITextViewDelegate {
     }
     
     private func setupNavigationItem() {
-        navigationItem.title = "Settings"
-        let rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "gearshape"), style: .plain, target: self, action: #selector(itemButtonTapped))
+        navigationItem.title = "Notes"
+        let rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "trash"), style: .plain, target: self, action: #selector(TrashButtonTapped))
         navigationItem.rightBarButtonItem = rightBarButtonItem
-        
     }
+    
     
     private func updateInterfaceTheme(isDark: Bool? = nil) {
         if let isDark = isDark {
@@ -136,9 +148,24 @@ class NoteView: UIViewController, UITextViewDelegate {
         
     }
     
-    @objc func itemButtonTapped() {
-        print("Work/Done")
+    @objc func TrashButtonTapped() {
+        guard let note = note else {
+            return
+        }
+        
+        let alert = UIAlertController(title: "Удаление", message: "Вы действительно хотите удалить заметку", preferredStyle: .alert)
+        let acceptAction = UIAlertAction(title: "Да", style: .destructive) { action in
+            self.controller?.onDeleteNote(id: note.id ?? "")
+        }
+        
+        let actionDecline = UIAlertAction(title: "Нет", style: .cancel)
+        
+        alert.addAction(actionDecline)
+        alert.addAction(acceptAction)
+        
+        present(alert, animated: true)
     }
+    
     
     @objc private func copyButtonTapped() {
         guard let textToCopy = uITextView.text else {
@@ -155,6 +182,7 @@ class NoteView: UIViewController, UITextViewDelegate {
         updateSaveButtonState()
     }
     
+    
     private func updateSaveButtonState() {
         let isNotEmpty = !(noteSearchBar.searchTextField.text?.isEmpty ?? true) || !(uITextView.text.isEmpty)
         saveButton.isEnabled = isNotEmpty
@@ -165,18 +193,35 @@ class NoteView: UIViewController, UITextViewDelegate {
         updateSaveButtonState()
     }
     
-    @objc private func saveButtonPressed() {
-        let id = UUID().uuidString
-        
-        let date = Date()
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        let dateString = dateFormatter.string(from: date)
-        
+    @objc  func saveButtonPressed() {
         if !(noteSearchBar.searchTextField.text?.isEmpty ?? true) || !(uITextView.text.isEmpty) {
-            coreCoreService.addNote(id: id, title: noteSearchBar.text ?? "", description: uITextView.text, date: dateString)
-            navigationController?.popViewController(animated: true)
+            controller?.onAddNote(note: note, title: noteSearchBar.text ?? "", description: uITextView.text)
         }
-        
     }
+}
+
+extension NoteView: NoteViewProtocol {
+    
+    func successAddNote() {
+        navigationController?.popViewController(animated: true)
+    }
+    
+    func failureAddNote() {
+        let alert = UIAlertController(title: "Ошибка", message: "Не удалось сохранить заметку!", preferredStyle: .alert)
+        let acceptAction = UIAlertAction(title: "ОК", style: .cancel)
+        alert.addAction(acceptAction)
+        present(alert, animated: true)
+    }
+    
+    func succesDelete() {
+        navigationController?.popViewController(animated: true)
+    }
+    
+    func failureDelete() {
+        let alert = UIAlertController(title: "Ошибка", message: "Не удалось удалить заметку!", preferredStyle: .alert)
+        let acceptAction = UIAlertAction(title: "ОК", style: .cancel)
+        alert.addAction(acceptAction)
+        present(alert, animated: true)
+    }
+    
 }

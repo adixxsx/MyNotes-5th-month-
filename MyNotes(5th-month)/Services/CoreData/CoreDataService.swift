@@ -8,8 +8,20 @@
 import UIKit
 import CoreData
 
+//CRUD - Create Read Update Delete
+// Post(Fetch) - create
+//Get(Patch) - read
+//Put - update, patch
+// DELETE - delete
+
+enum coreDataResponse {
+    case success
+    case failure
+}
+
 class CoreDataService {
     static let shared = CoreDataService()
+    
     
     private init() {
         
@@ -23,9 +35,11 @@ class CoreDataService {
         appDelegate.persistentContainers.viewContext
     }
     
-    // post - запись, положить что-то на базу.
-    func addNote(id: String, title: String, description: String, date: String) {
+    //post - запись, типа положить что-то на базу
+    
+    func addNote(id: String, title: String, description: String, date: String, completionHandler: @escaping (coreDataResponse) -> Void) {
         guard let entity = NSEntityDescription.entity(forEntityName: "Note", in: context) else {
+            completionHandler(.failure)
             return
         }
         
@@ -36,9 +50,14 @@ class CoreDataService {
         note.date = date
         
         appDelegate.saveContext()
+        completionHandler(.success)
+        DispatchQueue.main.async {
+            completionHandler(.success)
+        }
     }
     
-    //get, fetch - запись, считатывание.
+    //get, fetch - записать, считать
+    
     func fetchNotes() -> [Note] {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Note")
         do {
@@ -47,6 +66,76 @@ class CoreDataService {
             print(error.localizedDescription)
         }
         return []
+    }
+    
+    func updateNote(id: String, title: String, description: String, date: String) {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Note")
+        do {
+            guard let notes = try context.fetch(fetchRequest) as? [Note], let note = notes.first(where: { note in
+                note.id == id
+            }) else {
+                return
+            }
+            note.title = title
+            note.desc = description
+            note.date = date
+        } catch {
+            print(error.localizedDescription)
+        }
+        appDelegate.saveContext()
+    }
+    
+    // Delete inside the cell
+    
+    func delete(id: String, completionHandler: @escaping (coreDataResponse) -> Void) {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Note")
+        do {
+            guard let notes = try context.fetch(fetchRequest) as? [Note], let note = notes.first(where: { note in
+                note.id == id
+            }) else {
+                DispatchQueue.main.async {
+                    completionHandler(.failure)
+                }
+                return
+            }
+            context.delete(note)
+            DispatchQueue.main.async {
+                completionHandler(.success)
+            }
+        } catch {
+            print(error.localizedDescription)
+            DispatchQueue.main.async {
+                completionHandler(.failure)
+            }
+        }
+        appDelegate.saveContext()
+    }
+    
+    // Full DELETE
+    
+    func deleteNotes(completionHandler: @escaping (coreDataResponse) -> Void) {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Note")
+        
+        do {
+            guard let notes = try context.fetch(fetchRequest) as? [Note] else {
+                DispatchQueue.main.async {
+                    completionHandler(.failure)
+                }
+                return
+            }
+            notes.forEach { note in
+                context.delete(note)
+            }
+            DispatchQueue.main.async {
+                completionHandler(.success)
+            }
+        } catch {
+            print(error.localizedDescription)
+            DispatchQueue.main.async {
+                completionHandler(.failure)
+            }
+        }
+        appDelegate.saveContext()
     }
     
 }

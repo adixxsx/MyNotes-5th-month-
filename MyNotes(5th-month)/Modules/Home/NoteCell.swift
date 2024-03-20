@@ -12,26 +12,27 @@ class NoteCell: UICollectionViewCell {
     
     static var reuseId = "note_cell"
     
-    let colors: [UIColor] = [.purple, .cyan, .orange, .systemPink]
-    
     private lazy var titleLabel: UILabel = {
         let view = UILabel()
+        view.font = .systemFont(ofSize: 14, weight: .medium)
+        view.numberOfLines = 0
+        view.textColor = .black
         return view
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         layer.cornerRadius = 10
-        backgroundColor = colors.randomElement()
         setupConstraints()
     }
     
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not implemented")
+        fatalError("init(coder:) has not been implemented")
     }
     
-    func  transfer(title: String) {
+    func transfer(title: String, color: UIColor) {
         titleLabel.text = title
+        backgroundColor = color
     }
     
     private func setupConstraints() {

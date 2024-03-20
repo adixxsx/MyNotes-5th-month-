@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CE091FF72BAA919D00A26832 /* NoteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE091FF62BAA919D00A26832 /* NoteController.swift */; };
+		CE091FF92BAA91AC00A26832 /* NoteModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE091FF82BAA91AC00A26832 /* NoteModel.swift */; };
+		CE091FFC2BAA96CB00A26832 /* PresentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE091FFB2BAA96CB00A26832 /* PresentView.swift */; };
 		CE2E69E72B8AA17E007A9818 /* SettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2E69E62B8AA17E007A9818 /* SettingsVC.swift */; };
 		CE3E75732BA5082C0028F3A9 /* Note+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3E75712BA5082C0028F3A9 /* Note+CoreDataClass.swift */; };
 		CE3E75742BA5082C0028F3A9 /* Note+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3E75722BA5082C0028F3A9 /* Note+CoreDataProperties.swift */; };
@@ -34,6 +37,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		CE091FF62BAA919D00A26832 /* NoteController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteController.swift; sourceTree = "<group>"; };
+		CE091FF82BAA91AC00A26832 /* NoteModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteModel.swift; sourceTree = "<group>"; };
+		CE091FFB2BAA96CB00A26832 /* PresentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentView.swift; sourceTree = "<group>"; };
 		CE2E69E62B8AA17E007A9818 /* SettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsVC.swift; sourceTree = "<group>"; };
 		CE3E75712BA5082C0028F3A9 /* Note+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Note+CoreDataClass.swift"; sourceTree = "<group>"; };
 		CE3E75722BA5082C0028F3A9 /* Note+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Note+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -73,6 +79,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CE091FFA2BAA969A00A26832 /* Present */ = {
+			isa = PBXGroup;
+			children = (
+				CE091FFB2BAA96CB00A26832 /* PresentView.swift */,
+			);
+			path = Present;
+			sourceTree = "<group>";
+		};
 		CE2E69E82B8EF2FE007A9818 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
@@ -183,6 +197,8 @@
 			isa = PBXGroup;
 			children = (
 				CE74D4A02B9D75D2001B63A4 /* NoteView.swift */,
+				CE091FF62BAA919D00A26832 /* NoteController.swift */,
+				CE091FF82BAA91AC00A26832 /* NoteModel.swift */,
 			);
 			path = Note;
 			sourceTree = "<group>";
@@ -201,6 +217,7 @@
 			isa = PBXGroup;
 			children = (
 				CE74D49F2B9D75B8001B63A4 /* Note */,
+				CE091FFA2BAA969A00A26832 /* Present */,
 				CE2E69E82B8EF2FE007A9818 /* Settings */,
 				CE5374D32B87068700067146 /* Home */,
 				CE5374D82B8706F500067146 /* Helper */,
@@ -289,6 +306,7 @@
 				CE9BE63F2B982964003225A4 /* OnBoardStruct.swift in Sources */,
 				CE5374C32B8705EE00067146 /* HomeView.swift in Sources */,
 				CE5374DA2B87070B00067146 /* MakerView.swift in Sources */,
+				CE091FF92BAA91AC00A26832 /* NoteModel.swift in Sources */,
 				CE5374DE2B87189500067146 /* HomeController.swift in Sources */,
 				CE5374E02B8718A700067146 /* HomeModel.swift in Sources */,
 				CE3E75792BA510A20028F3A9 /* CoreDataService.swift in Sources */,
@@ -299,8 +317,10 @@
 				CE2E69E72B8AA17E007A9818 /* SettingsVC.swift in Sources */,
 				CE5374BF2B8705EE00067146 /* AppDelegate.swift in Sources */,
 				CE5374C12B8705EE00067146 /* SceneDelegate.swift in Sources */,
+				CE091FFC2BAA96CB00A26832 /* PresentView.swift in Sources */,
 				CE74D49E2B9D74F9001B63A4 /* Extension + UIColor.swift in Sources */,
 				CE9BE63D2B98294E003225A4 /* OnBoardCell.swift in Sources */,
+				CE091FF72BAA919D00A26832 /* NoteController.swift in Sources */,
 				CE9BE6342B92AB8B003225A4 /* SettingsCell.swift in Sources */,
 				CE9BE63B2B9828E7003225A4 /* OnBoardingView.swift in Sources */,
 				CE74D4942B9D737C001B63A4 /* Note.xcdatamodeld in Sources */,

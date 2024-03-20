@@ -21,6 +21,8 @@ class HomeView: UIViewController, UICollectionViewDelegate {
     private lazy var noteSearchBar: UISearchBar = {
         let view = UISearchBar()
         view.placeholder = "Search"
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.searchTextField.addTarget(self, action: #selector(noteSearchBarEditingChanged), for: .editingChanged)
         return view
     }()
     
@@ -48,7 +50,7 @@ class HomeView: UIViewController, UICollectionViewDelegate {
         view.titleLabel?.font = UIFont.systemFont(ofSize: 25)
         view.backgroundColor = .red
         view.layer.cornerRadius = 25
-        view.addTarget(self, action: #selector(noteTapped), for: .touchUpInside)
+        view.addTarget(self, action: #selector(NotesTapped), for: .touchUpInside)
         return view
     }()
 
@@ -130,26 +132,41 @@ class HomeView: UIViewController, UICollectionViewDelegate {
        }
     }
     
-    @objc func noteTapped() {
-        let vc = NoteView()
-        navigationController?.pushViewController(vc, animated: true)
+    @objc func NotesTapped() {
+        let noteView = NoteView()
+        navigationController?.pushViewController(noteView, animated: true)
+    }
+    
+    @objc func noteSearchBarEditingChanged() {
+        controller?.onNoteSearching(text: noteSearchBar.text ?? "")
     }
 }
 
 
 extension HomeView: UICollectionViewDataSource {
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return notes.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: NoteCell.reuseId, for: indexPath) as? NoteCell else {
-            return UICollectionViewCell() }
-        cell.transfer(title: notes[indexPath.row].title ?? "")
+            return UICollectionViewCell()
+        }
+        
+        let note = notes[indexPath.row].title ?? ""
+        
+        let colors: [UIColor] = [
+            UIColor().rgb(r: 217, g: 187, b: 249, alpha: 1),
+            UIColor().rgb(r: 215, g: 247, b: 242, alpha: 1),
+            UIColor().rgb(r: 215, g: 237, b: 248, alpha: 1),
+            UIColor().rgb(r: 255, g: 245, b: 225, alpha: 1)
+        ]
+        let color = colors[indexPath.row % colors.count]
+        cell.transfer(title: note, color: color)
         return cell
     }
 }
-
 
 
 extension HomeView: UICollectionViewDelegateFlowLayout{
